@@ -23,7 +23,7 @@ export default function AdminPayments() {
   const fetchPayments = async () => {
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch('http://localhost:5000/api/admin/payments', {
+      const res = await fetch('https://onlineportfolio-4i6c.onrender.com/api/admin/payments', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) setPayments(await res.json());
@@ -38,7 +38,7 @@ export default function AdminPayments() {
 
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/payments/${paymentId}/approve`, {
+      const res = await fetch(`https://onlineportfolio-4i6c.onrender.com/api/admin/payments/${paymentId}/approve`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -59,7 +59,7 @@ export default function AdminPayments() {
     if (!confirm('Are you sure you want to reject this slip?')) return;
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/payments/${paymentId}`, {
+      const res = await fetch(`https://onlineportfolio-4i6c.onrender.com/api/admin/payments/${paymentId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ status: 'rejected' })
@@ -182,7 +182,7 @@ export default function AdminPayments() {
                     <td className="font-bold text-green-600">฿{p.amount}</td>
                     <td>
                       {p.payment_slip ? (
-                        <a href={p.payment_slip.startsWith('http') ? p.payment_slip : `http://localhost:5000/${p.payment_slip}`} target="_blank" rel="noreferrer" className="btn btn-xs bg-gray-800 text-white hover:bg-gray-700">View Slip</a>
+                        <a href={p.payment_slip.startsWith('http') ? p.payment_slip : `https://onlineportfolio-4i6c.onrender.com/${p.payment_slip}`} target="_blank" rel="noreferrer" className="btn btn-xs bg-gray-800 text-white hover:bg-gray-700">View Slip</a>
                       ) : '-'}
                     </td>
                     <td>

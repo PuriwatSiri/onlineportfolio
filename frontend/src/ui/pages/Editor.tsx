@@ -222,7 +222,7 @@ const Editor: React.FC = () => {
       try {
         if (portfolioId) {
           const res = await fetch(
-            `http://localhost:5000/api/portfolios/${portfolioId}`,
+            `https://onlineportfolio-4i6c.onrender.com/api/portfolios/${portfolioId}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             },
@@ -250,7 +250,7 @@ const Editor: React.FC = () => {
           }
         } else if (templateId) {
           const res = await fetch(
-            `http://localhost:5000/api/admin/templates/${templateId}`,
+            `https://onlineportfolio-4i6c.onrender.com/api/admin/templates/${templateId}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             },
@@ -527,7 +527,7 @@ const Editor: React.FC = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/upload', {
+      const res = await fetch('https://onlineportfolio-4i6c.onrender.com/api/upload', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

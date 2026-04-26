@@ -26,7 +26,7 @@ export default function ViewPortfolio() {
   const zoomScale = 0.6; // ปรับขนาดให้พอดีหน้าจอ
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/portfolios/view/${id}`)
+    fetch(`https://onlineportfolio-4i6c.onrender.com/api/portfolios/view/${id}`)
       .then(async res => {
         if (!res.ok) throw new Error('Portfolio is set to private');
         return res.json();

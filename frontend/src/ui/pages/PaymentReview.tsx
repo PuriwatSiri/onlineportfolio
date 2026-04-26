@@ -87,7 +87,7 @@ export default function PaymentReview() {
             <p>Transfer Time: {item.transfer_time || item.transferTime}</p>
             {item.payment_slip && (
               <p>
-                Slip: <a href={item.payment_slip.startsWith('http') ? item.payment_slip : `http://localhost:5000/${item.payment_slip}`} target="_blank" rel="noreferrer" className="underline text-blue-600">ดูสลิป</a>
+                Slip: <a href={item.payment_slip.startsWith('http') ? item.payment_slip : `https://onlineportfolio-4i6c.onrender.com/${item.payment_slip}`} target="_blank" rel="noreferrer" className="underline text-blue-600">ดูสลิป</a>
               </p>
             )}
             <p className="text-sm opacity-60">** ระบบจะอัปเดตสถานะโดยอัตโนมัติเมื่อผู้ดูแลยืนยัน **</p>

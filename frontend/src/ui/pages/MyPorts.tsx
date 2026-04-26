@@ -22,7 +22,7 @@ export default function MyPorts() {
     if (!token) return navigate('/login');
 
     try {
-      const res = await fetch('http://localhost:5000/api/portfolios/me', {
+      const res = await fetch('https://onlineportfolio-4i6c.onrender.com/api/portfolios/me', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
@@ -43,7 +43,7 @@ export default function MyPorts() {
     
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`http://localhost:5000/api/portfolios/${id}`, {
+      const res = await fetch(`https://onlineportfolio-4i6c.onrender.com/api/portfolios/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

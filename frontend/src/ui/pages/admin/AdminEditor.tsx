@@ -296,7 +296,7 @@ const AdminEditor: React.FC = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/upload', {
+      const res = await fetch('https://onlineportfolio-4i6c.onrender.com/api/upload', {
         method: 'POST',
         headers: { 'Authorization': token ? `Bearer ${token}` : '' },
         body: formData

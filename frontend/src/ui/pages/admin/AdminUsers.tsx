@@ -317,13 +317,13 @@ export default function AdminUsers() {
   const fetchUsers = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
-      alert("กรุณาเข้าสู่ระบบก่อนครับ");
+      alert("Please log in first.");
       return;
     }
 
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/users', { headers: { 'Authorization': `Bearer ${token}` } });
+      const res = await fetch('https://onlineportfolio-4i6c.onrender.com/api/users', { headers: { 'Authorization': `Bearer ${token}` } });
       const data = await res.json();
       
       console.log("ข้อมูลจากหลังบ้าน:", data); 
@@ -333,11 +333,11 @@ export default function AdminUsers() {
         else if (data.users && Array.isArray(data.users)) setUsers(data.users);
         else setUsers([]);
       } else {
-        alert(`เกิดข้อผิดพลาด: ${data.message || 'Access Denied'}`);
+        alert(`Error! : ${data.message || 'Access Denied'}`);
       }
     } catch (error) { 
         console.error("Network Error:", error);
-        alert("เชื่อมต่อ Backend ไม่ได้");
+        alert("Unable to connect to the server.");
     } finally { 
         setLoading(false); 
     }
@@ -350,7 +350,7 @@ export default function AdminUsers() {
     const isEdit = !!selectedUser;
     if (isEdit && !formData.password) delete formData.password;
 
-    const url = isEdit ? `http://localhost:5000/api/users/${selectedUser._id}` : `http://localhost:5000/api/users`;
+    const url = isEdit ? `https://onlineportfolio-4i6c.onrender.com/api/users/${selectedUser._id}` : `https://onlineportfolio-4i6c.onrender.com/api/users`;
     const method = isEdit ? 'PUT' : 'POST';
 
     try {
@@ -371,7 +371,7 @@ export default function AdminUsers() {
     if (!confirm("Are you sure you want to delete this user?")) return;
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${userId}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+      const res = await fetch(`https://onlineportfolio-4i6c.onrender.com/api/users/${userId}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
       if (res.ok) fetchUsers();
     } catch (error) { alert("Error deleting user."); }
   };
@@ -379,7 +379,7 @@ export default function AdminUsers() {
   const handleStatusChange = async (userId: string, newStatus: 'Active' | 'Suspended') => {
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${userId}`, {
+      const res = await fetch(`https://onlineportfolio-4i6c.onrender.com/api/users/${userId}`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ status: newStatus }) 
       });

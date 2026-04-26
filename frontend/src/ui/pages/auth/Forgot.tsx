@@ -12,7 +12,7 @@ export default function Forgot() {
     setLoading(true)
     try {
       // 🔥 ยิง API ไปที่ Backend (Port 5000)
-      const res = await fetch('http://localhost:5000/api/users/forgot-password', {
+      const res = await fetch('https://onlineportfolio-4i6c.onrender.com/api/users/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: d.email })

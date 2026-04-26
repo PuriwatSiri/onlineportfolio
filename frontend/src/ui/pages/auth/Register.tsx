@@ -19,7 +19,7 @@ export default function Register() {
   const onSubmit = async (data: Form) => {
     try {
       // 🔥 Send data to Backend (Port 5000)
-      const response = await fetch('http://localhost:5000/api/users/register', {
+      const response = await fetch('https://onlineportfolio-4i6c.onrender.com/api/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

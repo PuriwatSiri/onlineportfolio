@@ -14,7 +14,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://onlineportfolio-4i6c.onrender.com',
         changeOrigin: true
       }
     }

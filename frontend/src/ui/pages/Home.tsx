@@ -44,7 +44,7 @@ export default function Home() {
 
       try {
         setLoading(true);
-        const res = await fetch('http://localhost:5000/api/portfolios/me', {
+        const res = await fetch('https://onlineportfolio-4i6c.onrender.com/api/portfolios/me', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         
