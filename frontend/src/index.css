@@ -1,8 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
-html, body, #root { height: 100%; }
-.container-max { max-width: 1200px; }
-.card-hover { @apply transition-transform hover:-translate-y-1; }
