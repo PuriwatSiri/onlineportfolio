@@ -29,7 +29,7 @@ app.use('/api/portfolios', portfolioRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 app.use('/api/upload', uploadRoutes);
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio_admin';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://Puriwat_db_user:Gv06dTe7ppI2lFi2';
 
 mongoose.connect(MONGODB_URI)
   .then((conn) => {
