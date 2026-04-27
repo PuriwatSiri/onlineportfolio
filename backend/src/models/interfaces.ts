@@ -33,7 +33,7 @@ export interface IPortfolio extends Document {
   user_id: Types.ObjectId;
   category_id: Types.ObjectId;
   template_id: Types.ObjectId;  
-
+}
 export interface IUpload extends Document {
   file_path: string;
   file_type: string;
