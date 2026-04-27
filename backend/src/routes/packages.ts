@@ -4,7 +4,7 @@ import { getPackages, createPackage, updatePackage, deletePackage } from '../con
 
 const router = express.Router();
 
-router.get('/', getPackages); 
+router.get('/', getPackages);
 router.post('/', auth, isAdmin, createPackage);
 router.put('/:id', auth, isAdmin, updatePackage);
 router.delete('/:id', auth, isAdmin, deletePackage);

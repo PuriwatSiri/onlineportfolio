@@ -1,4 +1,3 @@
-// src/ui/pages/Editor.tsx
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Rnd } from "react-rnd";
 import { SketchPicker } from "react-color";
@@ -39,12 +38,10 @@ import {
 } from "@/store/slices/portfoliosSlice";
 import { fetchTemplates } from "@/store/slices/templatesSlice";
 
-// --- Extended Fonts Import ---
 const fontStyles = `
 @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@100;200;300;400;500;600;700;800;900&family=Prompt:wght@100;200;300;400;500;600;700;800;900&family=Sarabun:wght@100;200;300;400;500;600;700;800&family=Noto+Sans+Thai:wght@100;200;300;400;500;600;700;800;900&family=Bai+Jamjuree:wght@200;300;400;500;600;700&family=Chakra+Petch:wght@300;400;500;600;700&family=Mitr:wght@200;300;400;500;600;700&family=Athiti:wght@200;300;400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&family=Open+Sans:wght@300;400;600;700;800&family=Lato:wght@100;300;400;700;900&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Merriweather:wght@300;400;700;900&family=Raleway:wght@100;200;300;400;500;600;700;800;900&family=Ubuntu:wght@300;400;500;700&family=Nunito:wght@200;300;400;500;600;700;800;900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 `;
 
-// --- Types ---
 type ElementType =
   | "text"
   | "image"
@@ -87,7 +84,6 @@ interface CanvasElement {
   style: ElemStyle;
 }
 
-// Icon Library
 const ICONS = {
   star: FaStar,
   heart: FaHeart,
@@ -102,7 +98,6 @@ const ICONS = {
   briefcase: FaBriefcase,
 };
 
-// Font Families
 const FONT_FAMILIES = [
   { label: "Kanit (Thai)", value: "Kanit, sans-serif" },
   { label: "Prompt (Thai)", value: "Prompt, sans-serif" },
@@ -171,9 +166,6 @@ const Editor: React.FC = () => {
   const templateId = searchParams.get("template");
 
   const allTemplates = useAppSelector((s) => s.templates.items);
-  // const user = useAppSelector((s) => s.auth.user); // Unused
-
-  // State
   const [pages, setPages] = useState<CanvasElement[][]>([getNewPageElements()]);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const elements = pages[currentPageIndex] || [];
@@ -184,7 +176,6 @@ const Editor: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // UI State
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [showBgPicker, setShowBgPicker] = useState(false);
   const [showBorderPicker, setShowBorderPicker] = useState(false);
@@ -325,7 +316,6 @@ const Editor: React.FC = () => {
     });
   };
 
-  // Add Elements
   const addText = () => {
     const el: CanvasElement = {
       id: uuidv4(),
@@ -519,30 +509,32 @@ const Editor: React.FC = () => {
     setSelectedId(el.id);
   };
 
-  // --- Updated Image Upload Logic (Cloudinary) ---
   const handleImageUpload = async (file: File) => {
     const formData = new FormData();
-    formData.append('image', file);
-    
+    formData.append("image", file);
+
     try {
       setIsLoading(true);
-      const token = localStorage.getItem('token');
-      const res = await fetch('https://onlineportfolio-4i6c.onrender.com/api/upload', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
+      const token = localStorage.getItem("token");
+      const res = await fetch(
+        "https://onlineportfolio-4i6c.onrender.com/api/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
         },
-        body: formData
-      });
-      
-      if (!res.ok) throw new Error('Upload failed');
-      
+      );
+
+      if (!res.ok) throw new Error("Upload failed");
+
       const data = await res.json();
       if (data.url) {
         const el: CanvasElement = {
           id: uuidv4(),
           type: "image",
-          content: data.url, // URL from Cloudinary
+          content: data.url,
           style: {
             x: 50,
             y: 50,
@@ -557,7 +549,7 @@ const Editor: React.FC = () => {
       }
     } catch (e) {
       console.error(e);
-      alert('Image upload failed. Please try again');
+      alert("Image upload failed. Please try again");
     } finally {
       setIsLoading(false);
     }
@@ -627,7 +619,7 @@ const Editor: React.FC = () => {
       setPages((prev) => [...prev, ...newPagesToAdd]);
       setPageBackgrounds((prev) => [...prev, ...newBgsToAdd]);
       alert(
-        `✅ Template pages added successfully (${newPagesToAdd.length} pages)`,
+        `Template pages added successfully (${newPagesToAdd.length} pages)`,
       );
     }
   };
@@ -669,13 +661,16 @@ const Editor: React.FC = () => {
         ).unwrap();
       } else {
         const result = await dispatch(createPortfolioAsync(payload)).unwrap();
-        const newId = result._id || result.id || (result.data && (result.data._id || result.data.id));
+        const newId =
+          result._id ||
+          result.id ||
+          (result.data && (result.data._id || result.data.id));
         if (newId) {
           navigate(`/editor?id=${newId}`, { replace: true });
         }
       }
 
-      alert("Saved successfully! ✅");
+      alert("Saved successfully!");
     } catch (error: any) {
       console.error("Save error:", error);
       alert("Error saving: " + (error.message || "Unknown error"));
@@ -893,9 +888,7 @@ const Editor: React.FC = () => {
     <div className="flex bg-[#f8f7fa] min-h-screen p-6 gap-6 relative overflow-hidden">
       <style>{fontStyles}</style>
 
-      {/* Left Sidebar */}
       <aside className="w-64 bg-white shadow-lg rounded-2xl p-4 flex flex-col gap-4 h-full overflow-y-auto flex-none">
-        {/* Tabs */}
         <div className="flex gap-2 border-b pb-2">
           <button
             className={`flex-1 py-2 text-xs font-semibold rounded-lg transition ${activeTab === "design" ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
@@ -917,7 +910,6 @@ const Editor: React.FC = () => {
           </button>
         </div>
 
-        {/* Design Tab */}
         {activeTab === "design" && (
           <div className="flex flex-col gap-4">
             <div className="font-semibold text-sm text-gray-700">Templates</div>
@@ -965,7 +957,6 @@ const Editor: React.FC = () => {
           </div>
         )}
 
-        {/* Elements Tab */}
         {activeTab === "elements" && (
           <div className="flex flex-col gap-4">
             <div>
@@ -1053,7 +1044,13 @@ const Editor: React.FC = () => {
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isLoading}
               >
-                 {isLoading ? 'Uploading...' : <><FaCamera className="mr-2" /> Upload Image</>}
+                {isLoading ? (
+                  "Uploading..."
+                ) : (
+                  <>
+                    <FaCamera className="mr-2" /> Upload Image
+                  </>
+                )}
               </button>
               <input
                 ref={fileInputRef}
@@ -1068,7 +1065,6 @@ const Editor: React.FC = () => {
           </div>
         )}
 
-        {/* Text Tab */}
         {activeTab === "text" && (
           <div className="flex flex-col gap-3">
             <button
@@ -1097,7 +1093,6 @@ const Editor: React.FC = () => {
 
         <hr className="border-gray-300" />
 
-        {/* Page Actions */}
         <div className="flex flex-col gap-2">
           <button
             className="w-full py-2 px-4 rounded-xl text-sm font-semibold border-2 border-gray-300 bg-gray-50 hover:bg-gray-100 transition flex items-center justify-center gap-2"
@@ -1113,7 +1108,6 @@ const Editor: React.FC = () => {
           </button>
         </div>
 
-        {/* Bottom Actions */}
         <div className="mt-auto flex flex-col gap-2 pt-4 border-t border-gray-300">
           <div className="flex gap-2">
             <button
@@ -1139,7 +1133,6 @@ const Editor: React.FC = () => {
         </div>
       </aside>
 
-      {/* Center Canvas Area */}
       <div className="flex flex-col flex-1 h-full overflow-hidden">
         <div className="flex items-center justify-between mb-4 py-3 px-5 bg-white rounded-xl shadow-md border border-gray-200 flex-none">
           <div className="flex flex-col">
@@ -1153,8 +1146,16 @@ const Editor: React.FC = () => {
               placeholder="Untitled"
             />
             <span className="text-[10px] text-gray-400">
-              Last edit {lastEdit.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}{' '}
-              {lastEdit.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+              Last edit{" "}
+              {lastEdit.toLocaleTimeString("en-GB", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}{" "}
+              {lastEdit.toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -1171,13 +1172,16 @@ const Editor: React.FC = () => {
         </div>
 
         <div className="flex-1 overflow-auto flex justify-center bg-gray-200 p-8 rounded-xl relative">
-          
           {(() => {
             const zoomScale = 0.8;
 
             return (
-              <div style={{ width: canvasSize.width * zoomScale, height: canvasSize.height * zoomScale }}>
-
+              <div
+                style={{
+                  width: canvasSize.width * zoomScale,
+                  height: canvasSize.height * zoomScale,
+                }}
+              >
                 <div
                   ref={canvasRef}
                   style={{
@@ -1187,8 +1191,8 @@ const Editor: React.FC = () => {
                     position: "relative",
                     overflow: "hidden",
                     boxShadow: "0 4px 30px rgba(0,0,0,0.15)",
-                    transform: `scale(${zoomScale})`,         
-                    transformOrigin: "top left",              
+                    transform: `scale(${zoomScale})`,
+                    transformOrigin: "top left",
                   }}
                   onClick={() => {
                     setSelectedId(null);
@@ -1204,13 +1208,18 @@ const Editor: React.FC = () => {
                     return (
                       <Rnd
                         key={el.id}
-                        scale={zoomScale} 
-                        size={{ width: el.style.width, height: el.style.height }}
+                        scale={zoomScale}
+                        size={{
+                          width: el.style.width,
+                          height: el.style.height,
+                        }}
                         position={{ x: el.style.x, y: el.style.y }}
                         bounds="parent"
                         onDragStart={() => setSelectedId(el.id)}
                         onDragStop={(e, d) =>
-                          updateElement(el.id, { style: { ...el.style, x: d.x, y: d.y } })
+                          updateElement(el.id, {
+                            style: { ...el.style, x: d.x, y: d.y },
+                          })
                         }
                         onResizeStop={(e, dir, ref, delta, pos) =>
                           updateElement(el.id, {
@@ -1219,14 +1228,15 @@ const Editor: React.FC = () => {
                               width: parseFloat(ref.style.width),
                               height: parseFloat(ref.style.height),
                               x: pos.x,
-                              y: pos.y
-                            }
+                              y: pos.y,
+                            },
                           })
                         }
                         style={{
                           zIndex: el.style.zIndex,
-                          border: selectedId === el.id ? '2px solid #3b82f6' : 'none',
-                          cursor: selectedId === el.id ? 'move' : 'pointer'
+                          border:
+                            selectedId === el.id ? "2px solid #3b82f6" : "none",
+                          cursor: selectedId === el.id ? "move" : "pointer",
                         }}
                         onClick={(e: any) => {
                           e.stopPropagation();
@@ -1235,10 +1245,10 @@ const Editor: React.FC = () => {
                       >
                         <div
                           style={{
-                            width: '100%',
-                            height: '100%',
+                            width: "100%",
+                            height: "100%",
                             transform: `rotate(${el.style.rotation || 0}deg)`,
-                            transformOrigin: 'center center'
+                            transformOrigin: "center center",
                           }}
                         >
                           {renderShape(el)}
@@ -1247,11 +1257,9 @@ const Editor: React.FC = () => {
                     );
                   })}
                 </div>
-                
-              </div> 
+              </div>
             );
           })()}
-          
         </div>
 
         <div className="flex justify-center items-center gap-4 mt-3 p-2 bg-white rounded-xl shadow-md flex-none w-fit mx-auto border border-gray-200">
@@ -1275,7 +1283,6 @@ const Editor: React.FC = () => {
         </div>
       </div>
 
-      {/* Right Properties Sidebar */}
       <div className="w-80 bg-white shadow-lg rounded-2xl p-5 flex flex-col gap-4 h-full overflow-y-auto flex-none">
         <div className="text-sm font-bold text-gray-700 flex items-center gap-2">
           <FaLayerGroup /> Canvas Background
@@ -1349,7 +1356,6 @@ const Editor: React.FC = () => {
                 </button>
               </div>
             </div>
-            {/* Properties Inputs for position, size, etc. (Keep existing code) */}
             <div>
               <label className="text-xs font-bold text-gray-600 mb-2 block">
                 Position & Size
@@ -1422,7 +1428,6 @@ const Editor: React.FC = () => {
               </div>
             </div>
 
-            {/* Rotation */}
             <div>
               <label className="text-xs font-bold text-gray-600 mb-1 block">
                 Rotation: {selectedElement.style.rotation || 0}°
@@ -1444,7 +1449,6 @@ const Editor: React.FC = () => {
               />
             </div>
 
-            {/* Opacity */}
             <div>
               <label className="text-xs font-bold text-gray-600 mb-1 block">
                 Opacity:{" "}
@@ -1476,7 +1480,6 @@ const Editor: React.FC = () => {
               />
             </div>
 
-            {/* Layer Order */}
             <div>
               <label className="text-xs font-bold text-gray-600 mb-2 block">
                 Layer Order
@@ -1505,13 +1508,13 @@ const Editor: React.FC = () => {
                   className="btn btn-xs btn-outline"
                   onClick={() => {
                     const list = [...pages[currentPageIndex]];
-                    const idx = list.findIndex(e => e.id === selectedId);
+                    const idx = list.findIndex((e) => e.id === selectedId);
                     if (idx === -1) return;
 
                     const [item] = list.splice(idx, 1);
                     list.unshift(item);
 
-                    setPages(p => {
+                    setPages((p) => {
                       const np = [...p];
                       np[currentPageIndex] = normalizeZIndex(list);
                       return np;
@@ -1523,7 +1526,6 @@ const Editor: React.FC = () => {
               </div>
             </div>
 
-            {/* Text Properties */}
             {selectedElement.type === "text" && (
               <>
                 <div>
@@ -1551,8 +1553,7 @@ const Editor: React.FC = () => {
                     ))}
                   </select>
                 </div>
-                 {/* ... (Other text properties) ... */}
-                 <div>
+                <div>
                   <label className="text-xs font-bold text-gray-600 mb-1 block">
                     Content
                   </label>
@@ -1822,7 +1823,6 @@ const Editor: React.FC = () => {
               </>
             )}
 
-            {/* Icon Color */}
             {selectedElement.type === "icon" && (
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold text-gray-600">
@@ -1881,7 +1881,6 @@ const Editor: React.FC = () => {
               </div>
             )}
 
-            {/* Shape Fill Color */}
             {(selectedElement.type === "rect" ||
               selectedElement.type === "circle" ||
               selectedElement.type === "triangle" ||
@@ -1946,7 +1945,6 @@ const Editor: React.FC = () => {
               </div>
             )}
 
-            {/* Border */}
             {(selectedElement.type === "rect" ||
               selectedElement.type === "circle" ||
               selectedElement.type === "image" ||
@@ -2034,7 +2032,6 @@ const Editor: React.FC = () => {
               </>
             )}
 
-            {/* Border Radius */}
             {(selectedElement.type === "rect" ||
               selectedElement.type === "image") && (
               <div>
@@ -2059,7 +2056,6 @@ const Editor: React.FC = () => {
               </div>
             )}
 
-            {/* Shadow */}
             <div>
               <label className="text-xs font-bold text-gray-600 mb-2 block">
                 Shadow
@@ -2095,7 +2091,6 @@ const Editor: React.FC = () => {
         )}
       </div>
 
-      {/* Hidden PDF Container */}
       <div
         style={{
           width: 0,

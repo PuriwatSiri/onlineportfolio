@@ -6,7 +6,7 @@ const PaymentSchema: Schema = new Schema({
   transfer_time: { type: Date, required: true },
   payment_slip: { type: String, required: true },
   status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
-  
+
   user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   package_id: { type: Schema.Types.ObjectId, ref: 'Package', required: true },
   paymentId: { type: String },

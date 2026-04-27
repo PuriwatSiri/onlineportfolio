@@ -16,7 +16,7 @@ export const createPortfolio = async (req: Request, res: Response) => {
 
     if (templateId) {
       await Template.findByIdAndUpdate(templateId, {
-        $inc: { usageCount: 1 } 
+        $inc: { usageCount: 1 }
       });
     }
     res.status(201).json({ message: 'Created', data: portfolio });
@@ -28,7 +28,7 @@ export const createPortfolio = async (req: Request, res: Response) => {
 export const getUserPortfolios = async (req: Request, res: Response) => {
   try {
     const user = (req as any).user;
-    const portfolios = await Portfolio.find({ user_id: user.id }).sort({ updatedAt: -1 }); 
+    const portfolios = await Portfolio.find({ user_id: user.id }).sort({ updatedAt: -1 });
     res.json(portfolios);
   } catch (error) {
     res.status(500).json({ error: 'Error fetching portfolios' });
@@ -64,17 +64,16 @@ export const updatePortfolio = async (req: Request, res: Response) => {
 
     const isOwner = portfolio.user_id && portfolio.user_id.toString() === user.id;
     if (!isOwner && user.role !== 'admin') return res.status(403).json({ error: 'Not authorized' });
-    
+
     const updated = await Portfolio.findByIdAndUpdate(
       req.params.id,
       {
-          ...req.body,
-          // ✅ อัปเดตข้อมูลให้ครบ
-          pages: req.body.pages,
-          page_backgrounds: req.body.page_backgrounds,
-          elements: req.body.pages ? req.body.pages[0] : []
-      }, 
-      { new: true } 
+        ...req.body,
+        pages: req.body.pages,
+        page_backgrounds: req.body.page_backgrounds,
+        elements: req.body.pages ? req.body.pages[0] : []
+      },
+      { new: true }
     );
 
     res.json(updated);

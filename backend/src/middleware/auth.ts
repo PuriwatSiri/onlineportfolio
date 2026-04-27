@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-// Check Token (if logged in)
 export const auth = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
@@ -10,16 +9,14 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    // use same default string as in token generator
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
-    (req as any).user = decoded; // Store user data in req
+    (req as any).user = decoded;
     next();
   } catch (error) {
     res.status(401).json({ message: 'Token is not valid' });
   }
 };
 
-// Check Admin Role
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
   if ((req as any).user && (req as any).user.role === 'admin') {
     next();

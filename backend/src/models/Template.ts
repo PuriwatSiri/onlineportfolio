@@ -17,11 +17,11 @@ export interface ITemplate extends Document {
 
 const TemplateSchema: Schema = new Schema({
   name: { type: String, required: true },
-  thumbnail: { type: String }, 
-  preview: { type: String },   
+  thumbnail: { type: String },
+  preview: { type: String },
   pages: { type: Array, default: [] },
   page_backgrounds: { type: [String], default: ['#ffffff'] },
-  elements: { type: Array, default: [] }, 
+  elements: { type: Array, default: [] },
   backgroundColor: { type: String, default: '#ffffff' },
   category: { type: String, default: 'General' },
   active: { type: Boolean, default: false },

@@ -1,19 +1,18 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 
-type Role = 'user'|'admin'
-export interface User { 
-  id: string; 
-  firstname: string; 
-  lastname: string; 
-  email: string; 
-  role: Role; 
-  packageExpire?: string; 
+type Role = 'user' | 'admin'
+export interface User {
+  id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  role: Role;
+  packageExpire?: string;
   packageId?: string;
 }
 
 interface AuthState { currentUser?: User; loading: boolean }
 
-// helper to normalize user object coming from backend
 const normalizeUser = (u: any) => {
   if (!u) return undefined;
   const copy = { ...u };
@@ -25,7 +24,7 @@ const normalizeUser = (u: any) => {
 
 const storedUser = localStorage.getItem('user');
 const initial: AuthState = {
-  currentUser: storedUser ? normalizeUser(JSON.parse(storedUser)) : undefined, 
+  currentUser: storedUser ? normalizeUser(JSON.parse(storedUser)) : undefined,
   loading: false
 }
 
@@ -55,13 +54,13 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: initial,
   reducers: {
-    login: (state, action: PayloadAction<User>) => { 
+    login: (state, action: PayloadAction<User>) => {
       const u = normalizeUser(action.payload);
       state.currentUser = u;
       state.loading = false;
       localStorage.setItem('user', JSON.stringify(u));
     },
-    logout: (state) => { 
+    logout: (state) => {
       state.currentUser = undefined;
       state.loading = false;
       localStorage.removeItem('token');

@@ -4,12 +4,11 @@ const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
   return {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}` 
+    'Authorization': `Bearer ${token}`
   };
 };
 
 export const api = {
-  // Templates
   async getTemplates() {
     const res = await fetch(`${API_BASE_URL}/admin/templates`, { headers: getAuthHeaders() });
     return res.json();
@@ -41,7 +40,6 @@ export const api = {
     });
   },
 
-  // Portfolios
   async getMyPortfolios() {
     const res = await fetch(`${API_BASE_URL}/portfolios/me`, { headers: getAuthHeaders() });
     return res.json();
@@ -73,7 +71,6 @@ export const api = {
     });
   },
 
-  // Packages
   async getPackages() {
     const res = await fetch(`${API_BASE_URL}/admin/packages`, { headers: getAuthHeaders() });
     return res.json();
@@ -127,12 +124,11 @@ export const api = {
     return res.json();
   },
 
-  // Payments
   async createPayment(data: any) {
     const res = await fetch(`${API_BASE_URL}/admin/payments`, {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: JSON.stringify(data)
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data)
     });
     return res.json();
   },
@@ -150,9 +146,9 @@ export const api = {
   },
   async updatePaymentStatus(id: string, status: string) {
     const res = await fetch(`${API_BASE_URL}/admin/payments/${id}`, {
-        method: 'PUT',
-        headers: getAuthHeaders(),
-        body: JSON.stringify({ status })
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ status })
     });
     return res.json();
   }

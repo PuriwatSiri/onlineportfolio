@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
-// อย่าลืมตรวจสอบว่าไฟล์นี้มีอยู่จริงและ exportฟังก์ชัน api ให้ครบนะครับ
-import { api } from '@/services/api' 
+import { api } from '@/services/api'
 
-// 1. Export Interface
 export interface CanvasElement {
   id: string;
   type: 'text' | 'image' | 'rect' | 'circle' | 'triangle' | 'line' | 'icon' | 'divider';
@@ -44,8 +42,8 @@ export interface Template {
   description?: string;
   releaseDate?: string;
   active: boolean;
-  elements?: CanvasElement[]; 
-  pages?: CanvasElement[][];  
+  elements?: CanvasElement[];
+  pages?: CanvasElement[][];
   page_backgrounds?: string[];
   usageCount?: number;
 }
@@ -57,13 +55,11 @@ interface State {
   error: string | null
 }
 
-// --- Async Thunks ---
 
 export const fetchTemplates = createAsyncThunk(
   'templates/fetchTemplates',
   async (_, { rejectWithValue }) => {
     try {
-      // คาดหวังว่า api.getTemplates() จะ return Array ของ Template
       return await api.getTemplates();
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to fetch templates');
@@ -98,33 +94,26 @@ export const deleteTemplateAsync = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       await api.deleteTemplate(id);
-      return id; // ส่ง id กลับมาเพื่อลบออกจาก state
+      return id;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to delete template');
     }
   }
 );
 
-// --- Initial State ---
-
-// ปรับให้ items เริ่มต้นเป็นว่าง เพื่อรอรับข้อมูลจริงจาก API เท่านั้น
-// (ลบ demo data ออกเพื่อป้องกันความสับสนในหน้า Admin)
-const initial: State = { 
-  items: [], 
-  filter: '', 
-  loading: false, 
-  error: null 
+const initial: State = {
+  items: [],
+  filter: '',
+  loading: false,
+  error: null
 }
 
-// --- Slice ---
 
 const slice = createSlice({
   name: 'templates',
   initialState: initial,
   reducers: {
     setFilter: (state, action: PayloadAction<string>) => { state.filter = action.payload },
-    
-    // Actions สำหรับจัดการ State แบบ Manual (ถ้าจำเป็น)
     addTemplate: (state, action: PayloadAction<Template>) => { state.items.push(action.payload) },
     updateTemplate: (state, action: PayloadAction<Template>) => {
       const i = state.items.findIndex(t => (t.id === action.payload.id || t._id === action.payload._id))
@@ -136,29 +125,25 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch
       .addCase(fetchTemplates.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchTemplates.fulfilled, (state, action) => {
         state.loading = false;
-        // แทนที่ items ด้วยข้อมูลจริงจาก DB
-        state.items = action.payload || []; 
+        state.items = action.payload || [];
       })
       .addCase(fetchTemplates.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
 
-      // Create
       .addCase(createTemplateAsync.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(createTemplateAsync.fulfilled, (state, action) => {
         state.loading = false;
-        // เพิ่มข้อมูลใหม่ที่ได้จาก DB เข้าไปใน list
         state.items.push(action.payload);
       })
       .addCase(createTemplateAsync.rejected, (state, action) => {
@@ -166,7 +151,6 @@ const slice = createSlice({
         state.error = action.payload as string;
       })
 
-      // Update
       .addCase(updateTemplateAsync.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -181,7 +165,6 @@ const slice = createSlice({
         state.error = action.payload as string;
       })
 
-      // Delete
       .addCase(deleteTemplateAsync.fulfilled, (state, action) => {
         state.items = state.items.filter(t => t.id !== action.payload && t._id !== action.payload);
       })

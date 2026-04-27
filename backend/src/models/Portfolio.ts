@@ -5,13 +5,11 @@ const PortfolioSchema: Schema = new Schema({
   title: { type: String, required: true },
   description: { type: String },
   is_public: { type: Boolean, default: false },
-  cover_image: { type: String }, 
-  
-  // ✅ Store page data and color per page
-  pages: { type: Array, default: [] }, 
+  cover_image: { type: String },
+
+  pages: { type: Array, default: [] },
   page_backgrounds: { type: [String], default: [] },
 
-  // Old fields
   elements: { type: Array, default: [] },
   backgroundColor: { type: String, default: '#ffffff' },
 

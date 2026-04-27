@@ -3,7 +3,6 @@ import User from '../models/User';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-// include user role in token so middleware can verify admin privileges
 const generateToken = (id: string, role: string) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET || 'secret', { expiresIn: '30d' });
 };
@@ -17,7 +16,6 @@ export const register = async (req: Request, res: Response) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // ✅ บวกเวลาฟรี 7 วัน
     const expireDate = new Date();
     expireDate.setDate(expireDate.getDate() + 7);
 
@@ -29,9 +27,9 @@ export const register = async (req: Request, res: Response) => {
     if (user) {
       res.status(201).json({
         user: {
-           _id: user.id, firstname: user.firstname, lastname: user.lastname,
-           email: user.email, role: user.role, packageExpire: user.packageExpire,
-           packageId: user.packageId
+          _id: user.id, firstname: user.firstname, lastname: user.lastname,
+          email: user.email, role: user.role, packageExpire: user.packageExpire,
+          packageId: user.packageId
         },
         token: generateToken(user.id, user.role)
       });
@@ -54,9 +52,9 @@ export const login = async (req: Request, res: Response) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       res.json({
         user: {
-           _id: user.id, firstname: user.firstname, lastname: user.lastname,
-           email: user.email, role: user.role, packageExpire: user.packageExpire,
-           packageId: user.packageId
+          _id: user.id, firstname: user.firstname, lastname: user.lastname,
+          email: user.email, role: user.role, packageExpire: user.packageExpire,
+          packageId: user.packageId
         },
         token: generateToken(user.id, user.role)
       });
@@ -106,7 +104,7 @@ export const updateUser = async (req: Request, res: Response) => {
       user.role = req.body.role || user.role;
       user.status = req.body.status || user.status;
       if (req.body.packageExpire !== undefined) {
-         user.packageExpire = req.body.packageExpire;
+        user.packageExpire = req.body.packageExpire;
       }
       if (req.body.password) {
         const salt = await bcrypt.genSalt(10);

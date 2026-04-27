@@ -5,7 +5,7 @@ import PasswordReset from './PasswordReset';
 import Template from './Template';
 import { Category, Package, UserPackage, Issue } from './Others';
 
-export { 
+export {
   User, Portfolio, Payment, PasswordReset, Template,
-  Category, Package, UserPackage, Issue 
+  Category, Package, UserPackage, Issue
 };

@@ -8,8 +8,8 @@ const UserSchema: Schema = new Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   deleted: { type: Boolean, default: false },
-  packageExpire: { type: Date, default: null }, // ✅ เพิ่มวันหมดอายุ
-  packageId: { type: Schema.Types.ObjectId, ref: 'Package', default: null }, // track current package
+  packageExpire: { type: Date, default: null },
+  packageId: { type: Schema.Types.ObjectId, ref: 'Package', default: null },
   status: { type: String, enum: ['Active', 'Suspended'], default: 'Active' }
 }, { timestamps: true });
 export default mongoose.model<IUser>('User', UserSchema);

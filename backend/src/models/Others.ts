@@ -1,12 +1,10 @@
 import mongoose, { Schema } from 'mongoose';
 import { ICategory, IIssue, IPackage, IUserPackage } from './interfaces';
 
-// Category
 const CategorySchema = new Schema({ category_name: { type: String, required: true } });
 export const Category = mongoose.models.Category || mongoose.model<ICategory>('Category', CategorySchema);
 
 
-// Package
 const PackageSchema = new Schema({
   package_name: { type: String, required: true },
   price: { type: Number, required: true },
@@ -15,7 +13,6 @@ const PackageSchema = new Schema({
 });
 export const Package = mongoose.models.Package || mongoose.model<IPackage>('Package', PackageSchema);
 
-// UserPackage
 const UserPackageSchema = new Schema({
   start_date: { type: Date, default: Date.now },
   end_date: { type: Date, required: true },
@@ -24,7 +21,7 @@ const UserPackageSchema = new Schema({
 });
 export const UserPackage = mongoose.models.UserPackage || mongoose.model<IUserPackage>('UserPackage', UserPackageSchema);
 
-// Issue
+
 const IssueSchema = new Schema({
   issueId: { type: String },
   title: { type: String, required: true },
