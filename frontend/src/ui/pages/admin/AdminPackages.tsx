@@ -292,7 +292,6 @@ export default function AdminPackages() {
         alert("Created successfully");
       }
       setMode("list");
-      dispatch(fetchPackages());
     } catch (error: any) {
       alert("Error saving package: " + error.message);
     }

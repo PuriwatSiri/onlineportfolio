@@ -218,16 +218,6 @@ function UserForm({ user, onSave, onCancel }: any) {
     packageExpire: formatDateForInput(user?.packageExpire),
   });
 
-  const addDays = (days: number) => {
-    const d = new Date();
-    d.setDate(d.getDate() + days);
-    const offset = d.getTimezoneOffset() * 60000;
-    const localDateTime = new Date(d.getTime() - offset)
-      .toISOString()
-      .slice(0, 16);
-    setFormData({ ...formData, packageExpire: localDateTime });
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isEdit && !formData.password)
@@ -294,6 +284,21 @@ function UserForm({ user, onSave, onCancel }: any) {
               />
             </div>
 
+            {!isEdit && (
+              <div>
+                <label className="label font-semibold">Password</label>
+                <input
+                  required
+                  type="password"
+                  className="input input-bordered w-full"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                />
+              </div>
+            )}
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="label font-semibold">Role</label>
@@ -327,30 +332,30 @@ function UserForm({ user, onSave, onCancel }: any) {
             <div className="col-span-2 font-bold flex items-center gap-2">
               <span
                 className={`badge text-white ${
-                  user.role === "admin"
+                  user?.role === "admin"
                     ? "badge-info"
-                    : user.packageExpire &&
+                    : user?.packageExpire &&
                         new Date(user.packageExpire) > new Date()
                       ? "badge-primary"
-                      : "bg-gray-400 border-none"
+                      : "bg-primary border-none"
                 }`}
               >
-                {user.role === "admin"
+                {user?.role === "admin"
                   ? "Admin Access"
-                  : user.packageExpire &&
+                  : user?.packageExpire &&
                       new Date(user.packageExpire) > new Date()
                     ? user.packageId?.package_name ||
                       user.packageId?.name ||
-                      "Active Plan"
+                      "Free"
                     : "Free"}
               </span>
             </div>
 
             <div className="font-medium text-gray-500">Expiration Date</div>
             <div className="col-span-2 font-bold">
-              {user.role === "admin" ? (
+              {user?.role === "admin" ? (
                 <span className="text-green-600">Lifetime (Admin)</span>
-              ) : user.packageExpire ? (
+              ) : user?.packageExpire ? (
                 <span className="text-red-500">
                   Expire on :{" "}
                   {new Date(user.packageExpire).toLocaleDateString("en-GB", {
@@ -373,7 +378,7 @@ function UserForm({ user, onSave, onCancel }: any) {
                 Cancel
               </button>
               <button type="submit" className="btn btn-primary text-white">
-                {isEdit ? "Save Changes" : "Create User"}
+                {isEdit ? "Save Changes" : "Create"}
               </button>
             </div>
           </form>
@@ -482,7 +487,7 @@ export default function AdminUsers() {
 
     const url = isEdit
       ? `https://onlineportfolio-4i6c.onrender.com/api/users/${selectedUser._id}`
-      : `https://onlineportfolio-4i6c.onrender.com/api/users`;
+      : `https://onlineportfolio-4i6c.onrender.com/api/users/register`;
     const method = isEdit ? "PUT" : "POST";
 
     try {

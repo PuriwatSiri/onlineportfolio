@@ -98,7 +98,6 @@ export const api = {
     });
   },
 
-  // Issues
   async reportIssue(data: any) {
     const res = await fetch(`${API_BASE_URL}/admin/issues`, {
       method: 'POST',

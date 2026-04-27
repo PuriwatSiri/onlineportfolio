@@ -9,7 +9,8 @@ const generateToken = (id: string, role: string) => {
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { firstname, lastname, email, password } = req.body;
+    const { firstname, lastname, email, password, role } = req.body;
+
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: 'User already exists' });
 
@@ -20,18 +21,25 @@ export const register = async (req: Request, res: Response) => {
     expireDate.setDate(expireDate.getDate() + 7);
 
     const user: any = await User.create({
-      firstname, lastname, email, password: hashedPassword,
+      firstname,
+      lastname,
+      email,
+      password: hashedPassword,
+      role: role || 'user',
       packageExpire: expireDate
     });
 
     if (user) {
       res.status(201).json({
         user: {
-          _id: user.id, firstname: user.firstname, lastname: user.lastname,
-          email: user.email, role: user.role, packageExpire: user.packageExpire,
-          packageId: user.packageId
+          _id: user.id,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          email: user.email,
+          role: user.role,
+          packageExpire: user.packageExpire,
         },
-        token: generateToken(user.id, user.role)
+        token: generateToken(user._id, user.role),
       });
     } else {
       res.status(400).json({ message: 'Invalid user data' });
@@ -103,13 +111,20 @@ export const updateUser = async (req: Request, res: Response) => {
       user.email = req.body.email || user.email;
       user.role = req.body.role || user.role;
       user.status = req.body.status || user.status;
+
+      if (req.body.packageId !== undefined) {
+        user.packageId = req.body.packageId === "" ? null : req.body.packageId;
+      }
+
       if (req.body.packageExpire !== undefined) {
         user.packageExpire = req.body.packageExpire;
       }
+
       if (req.body.password) {
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(req.body.password, salt);
       }
+
       const updatedUser = await user.save();
       res.json(updatedUser);
     } else {

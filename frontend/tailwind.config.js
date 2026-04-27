@@ -21,6 +21,6 @@ export default {
     oklch: false, 
     
     
-    themes: false
+    themes: ["light"]
   } 
 }
