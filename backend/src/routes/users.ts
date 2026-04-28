@@ -6,7 +6,8 @@ import {
   getUsers,
   getUserById,
   updateUser,
-  deleteUser
+  deleteUser,
+  updateProfile
 } from '../controllers/users';
 
 import { forgotPassword, resetPassword } from '../controllers/password';
@@ -25,5 +26,6 @@ router.get('/', getUsers);
 router.get('/:id', getUserById);
 router.put('/:id', updateUser);
 router.delete('/:id', deleteUser);
+router.put('/profile/:id', updateProfile);
 
 export default router;

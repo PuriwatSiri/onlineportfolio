@@ -235,7 +235,7 @@ function UserForm({ user, onSave, onCancel }: any) {
   return (
     <div className="max-w-2xl mx-auto mt-8">
       <button className="btn btn-ghost mb-4" onClick={onCancel}>
-        ← Back to List
+        ← Back
       </button>
       <div className="card bg-base-100 shadow-xl border border-gray-200">
         <div className="card-body">
@@ -395,7 +395,7 @@ function UserDetailForm({ user, onBack, onStatusChange }: any) {
   return (
     <div className="max-w-2xl mx-auto mt-8">
       <button className="btn btn-ghost mb-4" onClick={onBack}>
-        ← Back to List
+        ← Back
       </button>
       <div className="card bg-base-100 shadow-xl border border-gray-200">
         <div className="card-body">

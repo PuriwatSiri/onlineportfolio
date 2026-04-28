@@ -115,12 +115,46 @@ export const updateUser = async (req: Request, res: Response) => {
       if (req.body.packageId !== undefined) {
         user.packageId = req.body.packageId === "" ? null : req.body.packageId;
       }
-
       if (req.body.packageExpire !== undefined) {
         user.packageExpire = req.body.packageExpire;
       }
 
       if (req.body.password) {
+        if (req.body.currentPassword) {
+          const isMatch = await bcrypt.compare(req.body.currentPassword, user.password);
+          if (!isMatch) {
+            return res.status(400).json({ message: 'Current password is incorrect' });
+          }
+        }
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(req.body.password, salt);
+      }
+
+      const updatedUser = await user.save();
+      res.json(updatedUser);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateProfile = async (req: Request, res: Response) => {
+  try {
+    const user: any = await User.findById(req.params.id);
+    if (user) {
+      user.firstname = req.body.firstname || user.firstname;
+      user.lastname = req.body.lastname || user.lastname;
+      user.email = req.body.email || user.email;
+
+      if (req.body.password) {
+        if (req.body.currentPassword) {
+          const isMatch = await bcrypt.compare(req.body.currentPassword, user.password);
+          if (!isMatch) {
+            return res.status(400).json({ message: 'Current password is incorrect' });
+          }
+        }
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(req.body.password, salt);
       }

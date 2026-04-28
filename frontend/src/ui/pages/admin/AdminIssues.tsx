@@ -221,7 +221,7 @@ function ReportDetailForm({
   return (
     <div className="max-w-xl mx-auto">
       <button className="btn btn-ghost mb-4" onClick={onBack}>
-        ← Back to List
+        ← Back
       </button>
       <h1 className="text-2xl font-semibold mb-6">Report Detail</h1>
 
