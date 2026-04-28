@@ -26,15 +26,21 @@ export default function Profile() {
   });
 
   const submit = async (d: Form) => {
-    if (d.newPassword || d.currentPassword) {
+    const isChangingPassword =
+      d.currentPassword || d.newPassword || d.confirmPassword;
+
+    if (isChangingPassword) {
       if (!d.currentPassword) {
         return alert("Please enter your current password.");
       }
+      if (!d.newPassword) {
+        return alert("Please enter a new password.");
+      }
+      if (d.newPassword.length < 6) {
+        return alert("New password must be at least 6 characters.");
+      }
       if (d.newPassword !== d.confirmPassword) {
         return alert("New passwords do not match!");
-      }
-      if (d.newPassword && d.newPassword.length < 6) {
-        return alert("Password must be at least 6 characters.");
       }
     }
 
@@ -45,7 +51,7 @@ export default function Profile() {
         email: d.email,
       };
 
-      if (d.newPassword) {
+      if (isChangingPassword) {
         payload.password = d.newPassword;
         payload.currentPassword = d.currentPassword;
       }
@@ -69,7 +75,11 @@ export default function Profile() {
       const data = await res.json();
 
       if (res.ok) {
-        alert("Profile and password updated successfully!");
+        if (isChangingPassword) {
+          alert("Profile and password updated successfully!");
+        } else {
+          alert("Profile updated successfully!");
+        }
 
         dispatch(
           updateProfile({
