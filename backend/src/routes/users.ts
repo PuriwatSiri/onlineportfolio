@@ -21,11 +21,11 @@ router.post('/login', login);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
 router.get('/me', auth, getCurrentUser);
+router.put('/profile/:id', auth, updateProfile);
 router.use(auth, isAdmin);
 router.get('/', getUsers);
 router.get('/:id', getUserById);
 router.put('/:id', updateUser);
 router.delete('/:id', deleteUser);
-router.put('/profile/:id', updateProfile);
 
 export default router;
