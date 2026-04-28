@@ -55,7 +55,7 @@ export default function Profile() {
       const userId = u?._id || u?.id;
 
       const res = await fetch(
-        `http://localhost:5000/api/users/profile/${userId}`,
+        `https://onlineportfolio-4i6c.onrender.com/api/users/profile/${userId}`,
         {
           method: "PUT",
           headers: {
