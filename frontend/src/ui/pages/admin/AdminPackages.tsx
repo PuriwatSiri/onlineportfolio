@@ -192,7 +192,7 @@ function PackageForm({
             name="package_name"
             value={formData.package_name}
             onChange={handleChange}
-            placeholder="e.g. Pro Plan"
+
             className="input input-bordered w-full"
           />
         </div>
@@ -206,7 +206,7 @@ function PackageForm({
             name="duration"
             value={formData.duration}
             onChange={handleChange}
-            placeholder="30"
+
             className="input input-bordered w-full"
           />
         </div>
@@ -220,7 +220,7 @@ function PackageForm({
             name="price"
             value={formData.price}
             onChange={handleChange}
-            placeholder="329"
+
             className="input input-bordered w-full"
           />
         </div>
@@ -234,7 +234,6 @@ function PackageForm({
             name="package_detail"
             value={formData.package_detail}
             onChange={handleChange}
-            placeholder="Description e.g. Full access 30 days"
             className="input input-bordered w-full"
           />
         </div>

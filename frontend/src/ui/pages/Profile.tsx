@@ -26,8 +26,24 @@ export default function Profile() {
   });
 
   const submit = async (d: Form) => {
-    const isChangingPassword =
-      d.currentPassword || d.newPassword || d.confirmPassword;
+    if (!d.firstname.trim() || !d.lastname.trim() || !d.email.trim()) {
+      return alert("Firstname, Lastname, and Email cannot be empty.");
+    }
+
+    const isProfileChanged =
+      d.firstname !== u?.firstname ||
+      d.lastname !== u?.lastname ||
+      d.email !== u?.email;
+
+    const isChangingPassword = !!(
+      d.currentPassword ||
+      d.newPassword ||
+      d.confirmPassword
+    );
+
+    if (!isProfileChanged && !isChangingPassword) {
+      return alert("No changes were made to your profile.");
+    }
 
     if (isChangingPassword) {
       if (!d.currentPassword) {
@@ -110,7 +126,7 @@ export default function Profile() {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-gray-300 transition text-black"
+            className="w-11 h-11 flex items-center justify-center bg-transparent rounded-full hover:bg-gray-200 transition text-black"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -136,44 +152,29 @@ export default function Profile() {
               <h2 className="text-2xl font-semibold text-gray-700">
                 Personal Information
               </h2>
-
               <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-2">
-                <label
-                  htmlFor="firstname"
-                  className="md:text-right md:pr-6 font-medium text-gray-600"
-                >
+                <label className="md:text-right md:pr-6 font-medium text-gray-600">
                   Firstname
                 </label>
                 <input
-                  id="firstname"
                   {...register("firstname")}
                   className="input input-bordered w-full md:col-span-2"
                 />
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-2">
-                <label
-                  htmlFor="lastname"
-                  className="md:text-right md:pr-6 font-medium text-gray-600"
-                >
+                <label className="md:text-right md:pr-6 font-medium text-gray-600">
                   Lastname
                 </label>
                 <input
-                  id="lastname"
                   {...register("lastname")}
                   className="input input-bordered w-full md:col-span-2"
                 />
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-2">
-                <label
-                  htmlFor="email"
-                  className="md:text-right md:pr-6 font-medium text-gray-600"
-                >
+                <label className="md:text-right md:pr-6 font-medium text-gray-600">
                   Email
                 </label>
                 <input
-                  id="email"
                   {...register("email")}
                   className="input input-bordered w-full md:col-span-2"
                 />
@@ -184,46 +185,32 @@ export default function Profile() {
               <h2 className="text-2xl font-semibold text-gray-700">
                 Change Password
               </h2>
-
               <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-2">
-                <label
-                  htmlFor="currentPassword"
-                  className="md:text-right md:pr-6 font-medium text-gray-600"
-                >
+                <label className="md:text-right md:pr-6 font-medium text-gray-600">
                   Current Password
                 </label>
                 <input
-                  id="currentPassword"
                   type="password"
                   {...register("currentPassword")}
                   className="input input-bordered w-full md:col-span-2"
                 />
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-2">
-                <label
-                  htmlFor="newPassword"
-                  className="md:text-right md:pr-6 font-medium text-gray-600"
-                >
+                <label className="md:text-right md:pr-6 font-medium text-gray-600">
                   New Password
                 </label>
                 <input
-                  id="newPassword"
                   type="password"
+  
                   {...register("newPassword")}
                   className="input input-bordered w-full md:col-span-2"
                 />
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-2">
-                <label
-                  htmlFor="confirmPassword"
-                  className="md:text-right md:pr-6 font-medium text-gray-600"
-                >
+                <label className="md:text-right md:pr-6 font-medium text-gray-600">
                   Confirm Password
                 </label>
                 <input
-                  id="confirmPassword"
                   type="password"
                   {...register("confirmPassword")}
                   className="input input-bordered w-full md:col-span-2"

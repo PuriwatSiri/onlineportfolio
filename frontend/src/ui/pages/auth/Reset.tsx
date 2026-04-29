@@ -82,7 +82,6 @@ export default function Reset() {
             <input
               type="password"
               className={`input input-bordered w-full ${errors.password ? "input-error border-red-500" : ""}`}
-              placeholder="New Password"
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -105,7 +104,6 @@ export default function Reset() {
             <input
               type="password"
               className={`input input-bordered w-full ${errors.confirmPassword ? "input-error border-red-500" : ""}`}
-              placeholder="Confirm New Password"
               {...register("confirmPassword", {
                 required: "Please confirm your password",
                 validate: (val) => val === password || "Passwords do not match",

@@ -60,7 +60,6 @@ export default function Register() {
             <input
               id="firstname"
               className="input input-bordered w-full"
-              placeholder="Firstname"
               {...register("firstname", { required: true })}
             />
           </div>
@@ -75,7 +74,6 @@ export default function Register() {
             <input
               id="lastname"
               className="input input-bordered w-full"
-              placeholder="Lastname"
               {...register("lastname", { required: true })}
             />
           </div>
@@ -91,7 +89,6 @@ export default function Register() {
               id="email"
               type="email"
               className="input input-bordered w-full"
-              placeholder="Email"
               {...register("email", { required: true })}
             />
           </div>
@@ -106,7 +103,6 @@ export default function Register() {
             <input
               id="password"
               className="input input-bordered w-full"
-              placeholder="Password"
               type="password"
               {...register("password", { required: true })}
             />
@@ -122,7 +118,6 @@ export default function Register() {
             <input
               id="confirmPassword"
               className="input input-bordered w-full"
-              placeholder="Confirm Password"
               type="password"
               {...register("confirmPassword", {
                 required: true,

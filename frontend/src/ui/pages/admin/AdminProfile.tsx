@@ -16,7 +16,8 @@ export default function AdminProfile() {
   const u = useAppSelector((s) => s.auth.currentUser);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<Form>({
+
+  const { register, handleSubmit, reset } = useForm<Form>({
     defaultValues: {
       firstname: u?.firstname ?? "",
       lastname: u?.lastname ?? "",
@@ -24,18 +25,95 @@ export default function AdminProfile() {
     },
   });
 
-  const submit = (d: Form) => {
-    dispatch(
-      updateProfile({
+  const submit = async (d: Form) => {
+    if (!d.firstname.trim() || !d.lastname.trim() || !d.email.trim()) {
+      return alert("Firstname, Lastname, and Email cannot be empty.");
+    }
+
+    const isProfileChanged =
+      d.firstname !== u?.firstname ||
+      d.lastname !== u?.lastname ||
+      d.email !== u?.email;
+
+    const isChangingPassword =
+      d.currentPassword || d.newPassword || d.confirmPassword;
+
+    if (!isProfileChanged && !isChangingPassword) {
+      return alert("No changes were made to your profile.");
+    }
+
+    if (isChangingPassword) {
+      if (!d.currentPassword) {
+        return alert("Please enter your current password.");
+      }
+      if (!d.newPassword) {
+        return alert("Please enter a new password.");
+      }
+      if (d.newPassword.length < 6) {
+        return alert("New password must be at least 6 characters.");
+      }
+      if (d.newPassword !== d.confirmPassword) {
+        return alert("New passwords do not match!");
+      }
+    }
+
+    try {
+      const payload: any = {
         firstname: d.firstname,
         lastname: d.lastname,
         email: d.email,
-      }),
-    );
-    if (d.newPassword && d.newPassword === d.confirmPassword) {
-      console.log("admin password change requested");
+      };
+
+      if (isChangingPassword) {
+        payload.password = d.newPassword;
+        payload.currentPassword = d.currentPassword;
+      }
+
+      const token =
+        localStorage.getItem("token") || sessionStorage.getItem("token");
+      const userId = u?._id || u?.id;
+
+      const res = await fetch(
+        `https://onlineportfolio-4i6c.onrender.com/api/users/profile/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      const data = await res.json();
+
+      if (res.ok) {
+        if (isChangingPassword) {
+          alert("Admin profile and password updated successfully!");
+        } else {
+          alert("Admin profile updated successfully!");
+        }
+
+        dispatch(
+          updateProfile({
+            firstname: d.firstname,
+            lastname: d.lastname,
+            email: d.email,
+          } as any),
+        );
+
+        reset({
+          ...d,
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      alert("An error occurred while updating admin profile.");
     }
-    alert("Admin profile saved");
   };
 
   return (
@@ -77,7 +155,7 @@ export default function AdminProfile() {
               <input
                 {...register("firstname")}
                 className="input input-bordered flex-grow"
-                placeholder="Firstname"
+
               />
             </div>
             <div className="flex items-center">
@@ -87,7 +165,7 @@ export default function AdminProfile() {
               <input
                 {...register("lastname")}
                 className="input input-bordered flex-grow"
-                placeholder="Lastname"
+
               />
             </div>
             <div className="flex items-center">
@@ -97,7 +175,7 @@ export default function AdminProfile() {
               <input
                 {...register("email")}
                 className="input input-bordered flex-grow"
-                placeholder="Email"
+
               />
             </div>
           </div>

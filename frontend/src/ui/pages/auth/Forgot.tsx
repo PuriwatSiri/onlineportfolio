@@ -58,7 +58,6 @@ export default function Forgot() {
               id="email"
               type="email"
               className="input input-bordered w-full"
-              placeholder="Email"
               {...register("email", { required: true })}
             />
           </div>

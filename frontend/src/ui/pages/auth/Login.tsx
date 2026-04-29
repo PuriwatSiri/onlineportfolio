@@ -62,7 +62,6 @@ export default function Login() {
               id="email"
               type="email"
               className="input input-bordered w-full"
-              placeholder="Email"
               {...register("email", { required: true })}
             />
           </div>
@@ -78,7 +77,6 @@ export default function Login() {
               id="password"
               type="password"
               className="input input-bordered w-full"
-              placeholder="Password"
               {...register("password", { required: true })}
             />
           </div>
