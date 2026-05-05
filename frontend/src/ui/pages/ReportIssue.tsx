@@ -61,12 +61,12 @@ export default function ReportIssue() {
       {viewMode === "form" && (
         <div className="animate-fade-in">
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-2xl font-bold mb-4">Report</h1>
+            <h1 className="text-2xl font-bold mb-4">Report Issues</h1>
             <button
               className="btn btn-outline"
               onClick={() => setViewMode("list")}
             >
-              📋 View My Reports
+              📋 View My Report Issues
             </button>
           </div>
 
@@ -152,19 +152,19 @@ export default function ReportIssue() {
                 />
               </svg>
             </button>
-            <h1 className="text-2xl font-bold">My Reports</h1>
+            <h1 className="text-2xl font-bold">My Report Issues</h1>
           </div>
 
           {myIssues.length === 0 ? (
             <div className="text-gray-500 bg-white p-12 text-center rounded-2xl border border-gray-100 shadow-sm">
-              No reports submitted yet.
+              No report issues submitted yet.
             </div>
           ) : (
             <div className="overflow-x-auto bg-white rounded-2xl shadow-sm border border-gray-100">
               <table className="table w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="py-4 font-bold text-gray-700">Report ID</th>
+                    <th className="py-4 font-bold text-gray-700">Report Issues ID</th>
                     <th className="py-4 font-bold text-gray-700">
                       Submission Date
                     </th>

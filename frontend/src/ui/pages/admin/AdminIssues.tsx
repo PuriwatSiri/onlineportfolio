@@ -74,7 +74,7 @@ function ReportList({
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Reports Management</h1>
+        <h1 className="text-2xl font-bold">Report Issues Management</h1>
         <div className="flex items-center gap-4">
           <span className="text-gray-700 font-semibold">Search</span>
           <div className="relative">
@@ -92,14 +92,14 @@ function ReportList({
       </div>
 
       <div className="mb-2 text-sm text-gray-600 font-bold">
-        Total Reports: {filteredItems.length}
+        Total Report Issues : {filteredItems.length}
       </div>
 
       <div className="overflow-x-auto bg-white rounded-lg shadow border">
         <table className="table w-full">
           <thead className="bg-gray-50">
             <tr>
-              <th className="font-bold text-gray-700">Report ID</th>
+              <th className="font-bold text-gray-700">Report Issues ID</th>
               <th className="font-bold text-gray-700">User Name</th>
               <th className="font-bold text-gray-700">Title</th>
               <th className="font-bold text-gray-700">Category</th>
@@ -169,7 +169,7 @@ function ReportList({
             ) : (
               <tr>
                 <td colSpan={7} className="text-center py-8 text-gray-500">
-                  No reports found.
+                  No report issues found.
                 </td>
               </tr>
             )}
@@ -211,32 +211,75 @@ function ReportDetailForm({
   onBack: () => void;
   onSave: (issue: Issue) => void;
 }) {
-  const [formData, setFormData] = useState(issue);
+  const currentUser = useAppSelector((s) => s.auth.currentUser);
+
+  const [formData, setFormData] = useState({
+    ...issue,
+    status:
+      issue.status === "pending" || issue.status === "open"
+        ? "in_progress"
+        : issue.status,
+  });
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const dateToFormat =
+    issue.report_date || issue.reportDate || issue.createdAt || new Date();
+
+  const responderFromDB =
+    (issue as any).admin_name ||
+    ((issue as any).admin_id?.firstname
+      ? `${(issue as any).admin_id.firstname} ${(issue as any).admin_id.lastname || ""}`
+      : null);
+
   return (
     <div className="max-w-xl mx-auto">
       <button className="btn btn-ghost mb-4" onClick={onBack}>
         ← Back
       </button>
-      <h1 className="text-2xl font-semibold mb-6">Report Detail</h1>
+      <h1 className="text-2xl font-semibold mb-6">Report Issues Detail</h1>
 
       <div className="p-8 border rounded-lg shadow-lg bg-white">
-        <div className="text-xl font-bold mb-4 border-b pb-2">
+        <div className="text-xl font-bold mb-4 border-b pb-2 text-gray-800 uppercase">
           {issue.user_id?.firstname} {issue.user_id?.lastname}
         </div>
 
         <div className="grid grid-cols-3 gap-y-4 text-md mb-4 mt-4">
+          <div className="font-medium text-gray-500">Date & Time</div>
+          <div className="col-span-2 font-bold text-gray-800">
+            {new Date(dateToFormat).toLocaleString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </div>
+
           <div className="font-medium text-gray-500">Title</div>
-          <div className="col-span-2 font-bold">{formData.title}</div>
+          <div className="col-span-2 font-bold text-gray-800">
+            {formData.title}
+          </div>
+
           <div className="font-medium text-gray-500">Category</div>
-          <div className="col-span-2 font-bold">
+          <div className="col-span-2 font-bold text-gray-800">
             {formData.category || "System"}
           </div>
+
+          <div className="font-medium text-gray-500">Responded by</div>
+          <div className="col-span-2 font-bold text-gray-800">
+            {responderFromDB ? (
+              responderFromDB
+            ) : (
+              <span className="text-gray-400 font-normal">
+                Not responded yet
+              </span>
+            )}
+          </div>
+
           <div className="font-medium text-gray-500 flex items-center">
             Status
           </div>
@@ -245,9 +288,8 @@ function ReportDetailForm({
               name="status"
               value={formData.status}
               onChange={handleChange}
-              className="select select-bordered w-full max-w-xs"
+              className="select select-bordered w-full max-w-xs text-gray-800"
             >
-              <option value="pending">Pending</option>
               <option value="in_progress">In Progress</option>
               <option value="resolved">Resolved</option>
               <option value="rejected">Rejected</option>
@@ -255,7 +297,7 @@ function ReportDetailForm({
           </div>
 
           <div className="font-medium text-gray-500">Detail</div>
-          <div className="col-span-2 font-normal whitespace-normal bg-gray-50 p-3 rounded border">
+          <div className="col-span-2 font-normal whitespace-normal bg-gray-50 p-3 rounded border text-gray-800">
             {formData.description}
           </div>
         </div>
@@ -270,7 +312,7 @@ function ReportDetailForm({
             name="note"
             value={formData.note || ""}
             onChange={handleChange}
-            className="textarea textarea-bordered h-24 w-full"
+            className="textarea textarea-bordered h-24 w-full text-gray-800"
           ></textarea>
         </div>
 
@@ -280,7 +322,17 @@ function ReportDetailForm({
           </button>
           <button
             className="btn bg-gray-800 text-white hover:bg-gray-700"
-            onClick={() => onSave(formData)}
+            onClick={() => {
+              const adminId = currentUser?._id || currentUser?.id;
+              const adminName =
+                `${currentUser?.firstname || "Admin"} ${currentUser?.lastname || ""}`.trim();
+
+              onSave({
+                ...formData,
+                admin_id: adminId,
+                admin_name: adminName,
+              } as any);
+            }}
           >
             Save Changes
           </button>

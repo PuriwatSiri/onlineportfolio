@@ -30,6 +30,8 @@ const IssueSchema = new Schema({
   status: { type: String, default: 'pending' },
   report_date: { type: Date, default: Date.now },
   note: String,
-  user_id: { type: Schema.Types.ObjectId, ref: 'User' }
+  user_id: { type: Schema.Types.ObjectId, ref: 'User' },
+  admin_id: { type: Schema.Types.ObjectId, ref: 'User' },
+  admin_name: { type: String }
 });
 export const Issue = mongoose.models.Issue || mongoose.model<IIssue>('Issue', IssueSchema);

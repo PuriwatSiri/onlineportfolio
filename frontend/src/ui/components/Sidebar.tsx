@@ -17,7 +17,7 @@ const nav = [
   { to: "/editor", label: "Create", icon: CreateIcon },
   { to: "/my-ports", label: "My Ports", icon: MyportsIcon },
   { to: "/packages", label: "Packages", icon: PackagesIcon },
-  { to: "/report", label: "Reports", icon: ReportsIcon },
+  { to: "/report", label: "Report Issues", icon: ReportsIcon },
 ];
 
 const admin = [
@@ -25,7 +25,7 @@ const admin = [
   { to: "/admin/templates", label: "Template Management", icon: TemplatesIcon },
   { to: "/admin/payments", label: "Payments Management", icon: PaymentsIcon },
   { to: "/admin/packages", label: "Packages Management", icon: PackagesIcon },
-  { to: "/admin/issues", label: "Reports Management", icon: ReportsIcon },
+  { to: "/admin/issues", label: "Report Issues Management", icon: ReportsIcon },
   { to: "/admin/Profile", label: "Admin", icon: AdminIcon },
 ];
 

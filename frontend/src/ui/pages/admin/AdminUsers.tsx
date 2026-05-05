@@ -357,7 +357,7 @@ function UserForm({ user, onSave, onCancel }: any) {
                 <span className="text-green-600">Lifetime (Admin)</span>
               ) : user?.packageExpire ? (
                 <span className="text-red-500">
-                  Expire on :{" "}
+                  Expired on :{" "}
                   {new Date(user.packageExpire).toLocaleDateString("en-GB", {
                     day: "2-digit",
                     month: "2-digit",

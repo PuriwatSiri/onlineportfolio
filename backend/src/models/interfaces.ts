@@ -50,6 +50,8 @@ export interface IIssue extends Document {
   report_date: Date;
   note?: string;
   user_id: Types.ObjectId;
+  admin_id?: Types.ObjectId;
+  admin_name?: string;
 }
 
 export interface IPackage extends Document {
