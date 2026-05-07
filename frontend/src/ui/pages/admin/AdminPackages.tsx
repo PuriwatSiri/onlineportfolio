@@ -185,14 +185,33 @@ function PackageForm({
       <div className="p-6 border rounded-lg shadow-lg bg-white">
         <div className="form-control mb-4">
           <label className="label">
-            <span className="label-text font-bold">Package Name</span>
+            <span className="label-text font-bold flex items-center gap-2">
+              Package Name
+              <div
+                className="tooltip tooltip-right font-normal normal-case z-10"
+                data-tip="It is recommended to name the package according to its duration (e.g., '30 Days')."
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  className="w-4 h-4 stroke-current text-gray-400 hover:text-blue-500 cursor-help transition-colors"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+              </div>
+            </span>
           </label>
           <input
             type="text"
             name="package_name"
             value={formData.package_name}
             onChange={handleChange}
-
             className="input input-bordered w-full"
           />
         </div>
@@ -206,7 +225,6 @@ function PackageForm({
             name="duration"
             value={formData.duration}
             onChange={handleChange}
-
             className="input input-bordered w-full"
           />
         </div>
@@ -220,7 +238,6 @@ function PackageForm({
             name="price"
             value={formData.price}
             onChange={handleChange}
-
             className="input input-bordered w-full"
           />
         </div>
